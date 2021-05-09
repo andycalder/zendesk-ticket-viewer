@@ -9,6 +9,12 @@ class Repository
     @subdomain = subdomain
     @email = email
     @password = password
+    @tickets = []
+    add_tickets
+  end
+
+  def all
+    @tickets
   end
 
   def fetch_tickets
@@ -19,26 +25,10 @@ class Repository
 
     JSON.parse(json, { symbolize_names: true })[:tickets]
   end
+
+  def add_tickets
+    fetch_tickets.each do |ticket_hash|
+      @tickets << Ticket.new(ticket_hash)
+    end
+  end
 end
-
-# Minimal test code
-puts 'Zendesk subdomain:'
-print '> '
-subdomain = gets.chomp
-
-puts 'Email:'
-print '> '
-email = gets.chomp
-
-puts 'Password:'
-print '> '
-password = gets.chomp
-
-test_repo = Repository.new(subdomain, email, password)
-
-tickets = []
-test_repo.fetch_tickets.each do |ticket_hash|
-  tickets << Ticket.new(ticket_hash)
-end
-
-pp tickets
