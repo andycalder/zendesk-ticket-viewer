@@ -1,6 +1,7 @@
 require_relative 'views/view'
 require_relative 'repositories/repository'
 require_relative 'controllers/controller'
+require_relative 'router'
 
 view = View.new
 
@@ -10,5 +11,5 @@ password = view.ask_user_for('Password:')
 
 repository = Repository.new(subdomain, email, password)
 controller = Controller.new(repository)
-
-controller.list_tickets
+router = Router.new(controller)
+router.run

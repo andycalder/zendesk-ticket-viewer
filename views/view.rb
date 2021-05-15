@@ -7,7 +7,8 @@ class View
     gets.chomp
   end
 
-  def list_all_tickets(tickets)
+  def list_tickets(tickets)
+    puts `clear`
     print_row(%w[No Status Subject Requester Created Updated])
 
     tickets.each_with_index do |ticket, index|
