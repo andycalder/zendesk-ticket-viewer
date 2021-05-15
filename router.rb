@@ -1,32 +1,33 @@
 class Router
-  def initialize(controller)
+  def initialize(controller, view)
     @controller = controller
+    @view = view
     @running = true
   end
 
   def run
-    @controller.first_page
-
     while @running
+      @controller.view_list
       display_actions
-      input = @controller.prompt_action
+      input = @view.ask_user_for('Enter option:')
       route_action(input)
-
     end
   end
 
   def display_actions
-    puts 'Enter ticket number to view details'
-    puts 'Enter p for previous page'
-    puts 'Enter n for next page'
-    puts 'Enter q to quit'
+    puts ''
+    puts 'Enter 1 for ticket details'
+    puts 'Enter 2 for previous page'
+    puts 'Enter 3 for next page'
+    puts 'Enter 4 to quit'
   end
 
   def route_action(action)
     case action
-    when 'n' then @controller.next_page
-    when 'p' then @controller.prev_page
-    when 'q' then @running = false
+    when '1' then @controller.view_details
+    when '2' then @controller.view_prev_page
+    when '3' then @controller.view_next_page
+    when '4' then @running = false
     else puts 'Invalid input.'
     end
   end

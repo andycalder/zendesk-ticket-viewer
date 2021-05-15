@@ -1,15 +1,19 @@
 require 'date'
 
 class Ticket
-  attr_reader :status, :subject, :requester_id, :created_at, :updated_at
+  attr_reader :id, :status, :subject, :requester_id, :created_at, :updated_at, :description
 
-  def initialize(attributes)
-    @status = attributes[:status]
-    @subject = attributes[:subject]
-    @requester_id = attributes[:requester_id]
-    @created_at = parse_date(attributes[:created_at])
-    @updated_at = parse_date(attributes[:updated_at])
+  def initialize(attrs)
+    @id = attrs[:id]
+    @status = attrs[:status]
+    @subject = attrs[:subject]
+    @requester_id = attrs[:requester_id]
+    @created_at = parse_date(attrs[:created_at])
+    @updated_at = parse_date(attrs[:updated_at])
+    @description = attrs[:description]
   end
+
+  private
 
   def parse_date(str)
     Date.parse(str)

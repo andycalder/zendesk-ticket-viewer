@@ -6,22 +6,31 @@ class Controller
     @view = View.new
   end
 
-  def first_page
-    tickets = @repository.first_page
-    @view.list_tickets(tickets)
+  def view_prev_page
+    @repository.load_prev_page
+    view_list
   end
 
-  def prev_page
-    tickets = @repository.prev_page
-    @view.list_tickets(tickets)
+  def view_next_page
+    @repository.load_next_page
+    view_list
   end
 
-  def next_page
-    tickets = @repository.next_page
-    @view.list_tickets(tickets)
+  def view_list
+    tickets = @repository.all
+    @view.display_list(tickets)
   end
 
-  def prompt_action
-    @view.ask_user_for('')
+  def view_details
+    id = @view.ask_user_for('Enter ticket id:').to_i
+    ticket = @repository.find(id)
+
+    if ticket
+      @view.display_details(ticket)
+      @view.ask_user_for('Press enter to go back.')
+    else
+      puts 'Invalid id.'
+      view_details
+    end
   end
 end

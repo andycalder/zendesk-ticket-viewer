@@ -12,24 +12,30 @@ class Repository
 
     enc = Base64.encode64("#{@email}:#{@password}")
     @headers = { 'Authorization' => "Basic #{enc}" }
-  end
 
-  def first_page
     url = "https://#{@subdomain}.zendesk.com/api/v2/tickets.json?page[size]=25"
-    create_tickets(fetch_page(url))
+    add_tickets(load_page(url))
   end
 
-  def prev_page
-    create_tickets(fetch_page(@prev_url))
+  def all
+    @tickets
   end
 
-  def next_page
-    create_tickets(fetch_page(@next_url))
+  def find(id)
+    @tickets[id]
+  end
+
+  def load_prev_page
+    add_tickets(load_page(@prev_url))
+  end
+
+  def load_next_page
+    add_tickets(load_page(@next_url))
   end
 
   private
 
-  def fetch_page(url)
+  def load_page(url)
     json = URI.open(url, @headers).read
     page = JSON.parse(json, { symbolize_names: true })
 
@@ -40,7 +46,12 @@ class Repository
     page[:tickets]
   end
 
-  def create_tickets(arr)
-    arr.map { |ticket_hash| Ticket.new(ticket_hash) }
+  def add_tickets(arr)
+    @tickets = {}
+
+    arr.each do |ticket_hash|
+      ticket = Ticket.new(ticket_hash)
+      @tickets[ticket.id] = ticket
+    end
   end
 end

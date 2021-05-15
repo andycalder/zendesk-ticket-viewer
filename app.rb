@@ -11,5 +11,6 @@ password = view.ask_user_for('Password:')
 
 repository = Repository.new(subdomain, email, password)
 controller = Controller.new(repository)
-router = Router.new(controller)
+router = Router.new(controller, view)
+
 router.run
