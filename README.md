@@ -16,6 +16,11 @@ Unit tests require `rspec`. To install `rspec` run:
 bundle install
 ```
 
+To run unit tests for a model run:
+```
+ruby spec/{file}.rb
+```
+
 ## Usage
 
 You will be prompted to sign in with your Zendesk subdomain, email and password. Once you are authenticated you will be presented with a list view showing ticket details. Navigation options are as follows:
