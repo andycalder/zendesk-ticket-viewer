@@ -1,13 +1,14 @@
 require_relative 'ticket'
 
 class Page
-  attr_reader :next_url
+  attr_reader :next_url, :prev_url
 
   def initialize(page_hash)
     @tickets = {}
     create_tickets(page_hash[:tickets])
 
     @has_next_page = page_hash[:meta][:has_more]
+    @prev_url = page_hash[:links][:prev]
     @next_url = page_hash[:links][:next]
   end
 
@@ -28,5 +29,9 @@ class Page
 
   def next_page?
     @has_next_page
+  end
+
+  def prev_page?
+    find(1) ? false : true
   end
 end
