@@ -1,5 +1,4 @@
-require 'open-uri'
-require 'base64'
+require 'net/http'
 require 'json'
 
 require_relative '../models/ticket'
@@ -10,10 +9,7 @@ class Repository
     @email = email
     @password = password
 
-    enc = Base64.encode64("#{@email}:#{@password}")
-    @headers = { 'Authorization' => "Basic #{enc}" }
-
-    url = "https://#{@subdomain}.zendesk.com/api/v2/tickets.json?page[size]=25"
+    url = URI("https://#{@subdomain}.zendesk.com/api/v2/tickets.json?page[size]=25")
     add_tickets(load_page(url))
   end
 
@@ -36,8 +32,14 @@ class Repository
   private
 
   def load_page(url)
-    json = URI.open(url, @headers).read
-    page = JSON.parse(json, { symbolize_names: true })
+    request = Net::HTTP::Get.new(url)
+    request.basic_auth(@email, @password)
+
+    response = Net::HTTP.start(url.hostname, url.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+
+    page = JSON.parse(response.body, { symbolize_names: true })
 
     @prev_url = page[:links][:prev]
     @next_url = page[:links][:next]
