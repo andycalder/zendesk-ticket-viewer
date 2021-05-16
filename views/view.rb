@@ -25,7 +25,7 @@ class View
     puts "Requester:   #{ticket.requester_id}"
     puts "Created:     #{ticket.created_at}"
     puts "Updated:     #{ticket.updated_at}"
-    puts "Description: #{ticket.description}"
+    puts "Description:\n\n#{ticket.description}"
   end
 
   private
