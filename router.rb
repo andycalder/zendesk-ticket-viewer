@@ -1,7 +1,10 @@
+require_relative 'controllers/pages_controller'
+require_relative 'views/view'
+
 class Router
-  def initialize(pages_controller, view)
-    @pages_controller = pages_controller
-    @view = view
+  def initialize
+    @pages_controller = PagesController.new
+    @view = View.new
     @running = true
   end
 

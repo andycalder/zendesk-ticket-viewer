@@ -12,13 +12,6 @@ class Page
     @next_url = page_hash[:links][:next]
   end
 
-  def create_tickets(arr)
-    arr.each do |ticket_hash|
-      ticket = Ticket.new(ticket_hash)
-      @tickets[ticket.id] = ticket
-    end
-  end
-
   def all
     @tickets
   end
@@ -33,5 +26,14 @@ class Page
 
   def prev_page?
     find(1) ? false : true
+  end
+
+  private
+
+  def create_tickets(arr)
+    arr.each do |ticket_hash|
+      ticket = Ticket.new(ticket_hash)
+      @tickets[ticket.id] = ticket
+    end
   end
 end

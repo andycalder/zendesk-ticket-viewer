@@ -1,9 +1,10 @@
 require_relative '../views/view'
 require_relative '../models/page'
+require_relative 'sessions_controller'
 
 class PagesController
-  def initialize(sessions_controller)
-    @sessions_controller = sessions_controller
+  def initialize
+    @sessions_controller = SessionsController.new
     @view = View.new
     load_first_page
   end

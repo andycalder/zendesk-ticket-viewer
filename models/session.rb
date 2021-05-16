@@ -1,5 +1,4 @@
 require 'net/http'
-require 'json'
 
 class Session
   def self.load_json(url_string, email, password)
@@ -11,14 +10,6 @@ class Session
       http.request(request)
     end
 
-    handle_response(response)
-  end
-
-  def self.handle_response(response)
-    if response.is_a?(Net::HTTPSuccess)
-      JSON.parse(response.body, { symbolize_names: true })
-    else
-      nil
-    end
+    yield(response.code, response.body)
   end
 end

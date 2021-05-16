@@ -19,12 +19,17 @@ class SessionsController
   end
 
   def load_json(url)
-    json = Session.load_json(url, @email, @password)
-    if json
-      json
-    else
-      puts 'HTTP error. Please try again.'
-      authenticate
+    Session.load_json(url, @email, @password) do |status, body|
+      case status
+      when '200'
+        JSON.parse(body, { symbolize_names: true })
+      when '401'
+        puts 'Invalid credentials. Please try again.'
+        authenticate
+      else
+        puts "HTTP error #{status}. Please try again."
+        authenticate
+      end
     end
   end
 end
